@@ -1,38 +1,50 @@
 #include <string>
 #include <vector>
-#include <algorithm>
 #include <queue>
+
 using namespace std;
 
 int solution(vector<int> priorities, int location) {
     int answer = 0;
+    queue<int> processes;
+    for (auto& item : priorities) {
+        processes.push(item);
+    }
 
-    queue<int> q;
-    
-    for(int i = 0; i < priorities.size(); i++)
-        q.push(i);
-    
-    int max = *max_element(priorities.begin(), priorities.end());
-    int count = 1;
-    while(1)
-    {
-        int num = q.front();
-        
-        if(priorities[num] < max)
+    while (true) {
+        bool start = true;
+        int index = 0;
+        for (int i = 0; i < priorities.size(); i++)
         {
-            q.push(num);
-            q.pop();
+            if (processes.front() < priorities[i]) {
+                processes.push(processes.front());
+                processes.pop();
+                location--;
+
+                if (location < 0) {
+                    location = processes.size() - 1;
+                }
+
+                start = false;
+                break;
+            }
+            else if (processes.front() == priorities[i]) {
+                index = i;
+            }
         }
-        else
-        {
-            if(num == location)
-                return count;
-            priorities[num] = 0;
-            max = *max_element(priorities.begin(), priorities.end());
-            count++;
-            q.pop();
+
+        if (start) {
+            processes.pop();
+            answer++;
+            priorities.erase(priorities.begin() + index);
+            if (location == 0) {
+                break;
+            }
+            else {
+                location--;
+            }
         }
     }
-    
+
     return answer;
 }
