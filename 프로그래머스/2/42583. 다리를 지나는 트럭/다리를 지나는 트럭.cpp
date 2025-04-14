@@ -34,6 +34,7 @@ int solution(int bridge_length, int weight, vector<int> truck_weights) {
             }
         }
 
+
     }
     answer += truck_cross[truck_cross.size()-1] - answer;
     return answer;
