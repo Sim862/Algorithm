@@ -15,25 +15,22 @@ vector<int> solution(vector<int> prices) {
 	{
 		answer.push_back(0);
 
-		if (prices[priceDeltas.top()] > prices[i])
-		{
-			while (priceDeltas.size() > 0) {
+		while (priceDeltas.size() > 0) {
 
-				if (prices[priceDeltas.top()] > prices[i])
-				{
-					answer[priceDeltas.top()] = i - priceDeltas.top();
-					priceDeltas.pop();
-				}
-				else {
-					break;
-				}
+			if (prices[priceDeltas.top()] > prices[i])
+			{
+				answer[priceDeltas.top()] = i - priceDeltas.top();
+				priceDeltas.pop();
+			}
+			else {
+				break;
 			}
 		}
 		
 		priceDeltas.push(i);
 	}
 
-	for (int i = 0; i < priceDeltas.size();)
+	while (priceDeltas.size() > 0)
 	{
 		answer[priceDeltas.top()] = prices.size() - 1 - priceDeltas.top();
 		priceDeltas.pop();
