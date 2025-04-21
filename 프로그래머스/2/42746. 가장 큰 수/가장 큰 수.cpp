@@ -1,20 +1,25 @@
 #include <string>
 #include <vector>
-#include <queue>
 #include <algorithm>
 using namespace std;
 
 string solution(vector<int> numbers) {
     string answer = "";
-    sort(numbers.begin(), numbers.end(), [](int a, int b) {
-        return to_string(a) + to_string(b) > to_string(b) + to_string(a);
+    vector<string> strings;
+
+    for (auto& item : numbers) {
+        strings.push_back(to_string(item));
+    }
+    sort(strings.begin(), strings.end(), [](string &a, string &b) {
+        return b + a < a + b;
         });
 
-    if (numbers[0] == 0) return "0";
+    if (strings[0] == "0")
+        return "0";
 
-    for (auto& item : numbers)
+    for (auto& item : strings)
     {
-        answer += to_string(item);
+        answer += item;
     }
 
     return answer;
