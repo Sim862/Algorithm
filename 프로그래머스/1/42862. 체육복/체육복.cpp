@@ -1,40 +1,33 @@
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 int solution(int n, vector<int> lost, vector<int> reserve) {
-    int answer = 0;
+    int answer = n;
 
-	for (int i = 0; i < lost.size(); i++)
-	{
-		for (int j = 0; j < reserve.size(); j++)
-		{
-			if (lost[i] == reserve[j]) {
+    int* student = new int[n]();
 
-				reserve.erase(reserve.begin() + j);
-				lost.erase(lost.begin() + i);
-				i--;
-				break;
-			}
-		}
-	}
-	
-	for (int i = 0; i < lost.size(); i++)
-	{
-		for (int j = 0; j < reserve.size(); j++)
-		{
-			if (lost[i] == reserve[j]-- || lost[i] == reserve[j]++) {
+    for (auto& i : lost) student[i - 1]--;
+    for (auto& i : reserve) student[i - 1]++;
 
-				reserve.erase(reserve.begin() + j);
-				lost.erase(lost.begin() + i);
-				i--;
-				break;
-			}
-		}
-	}
-
-	answer = n - lost.size();
+    for (int i = 0; i < n; i++)
+    {
+        if (student[i] < 0) {
+            if (i > 0 && student[i - 1] > 0) {
+                student[i - 1]--;
+                student[i]++;
+            }
+            else if(i < n-1 && student[i+1] > 0) {
+                student[i + 1]--;
+                student[i]++;
+            }
+            else {
+                answer--;
+            }
+        }
+    }
 
     return answer;
 }
